@@ -153,10 +153,29 @@ python src/genomic_tools/batch_contamination.py --bam-dir /path/to/bams --refere
 Determine biological sex using multiple genomic indicators:
 
 ```bash
-python src/genomic_tools/sex_verify.py --bam input.bam --reference ref.fa --snps snps.bed
+python src/genomic_tools/sex_verify.py --bam input.bam --reference ref.fa --snps x_snps.bed
 ```
 
-Interpretation Guidelines:
+#### SNP Selection for X Heterozygosity
+The tool includes a script to generate appropriate X chromosome SNPs:
+
+```bash
+python src/genomic_tools/generate_x_snps.py --gnomad-vcf gnomad.chrX.vcf.gz --output x_snps.bed
+```
+
+SNP selection criteria:
+- Common variants (>1% minor allele frequency)
+- Outside pseudoautosomal regions (PARs)
+- Not in regions of high X-Y homology
+- Well-spaced (≥10kb apart)
+- Common in females (>20% frequency)
+
+Recommended SNP sources:
+- gnomAD X chromosome variants
+- 1000 Genomes Project X chromosome SNPs
+- dbSNP validated X chromosome variants
+
+#### Interpretation Guidelines:
 | Pattern | XX Female | XY Male | X0 (Turner) | XXY (Klinefelter) |
 |---------|-----------|---------|-------------|-------------------|
 | X/Auto  | ~1.0     | ~0.5    | ~1.0        | ~1.0             |
